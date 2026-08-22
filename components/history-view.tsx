@@ -1,0 +1,58 @@
+import { Button } from "@/components/ui/button";
+import type { Attempt } from "@/lib/types";
+import { QUESTION_TYPE_LABEL } from "@/lib/types";
+import { formatClock, formatDateTime } from "@/lib/utils";
+import { TASK2_MIN_WORDS } from "@/lib/word-count";
+
+const STATUS_LABEL = {
+  in_progress: "途中",
+  completed: "提出",
+  time_up: "時間切れ",
+} as const;
+
+type HistoryViewProps = {
+  attempts: Attempt[];
+  onBack: () => void;
+  onOpen: (attempt: Attempt) => void;
+};
+
+export function HistoryView({ attempts, onBack, onOpen }: HistoryViewProps) {
+  return (
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+      <header className="flex items-center justify-between">
+        <h1 className="font-serif text-3xl text-ink">履歴</h1>
+        <Button variant="ghost" onClick={onBack}>
+          戻る
+        </Button>
+      </header>
+
+      {attempts.length === 0 ? (
+        <p className="text-sm text-ink-muted">まだ提出した練習はありません。</p>
+      ) : (
+        <ul className="flex flex-col gap-2">
+          {attempts.map((attempt) => (
+            <li key={attempt.id}>
+              <button
+                type="button"
+                onClick={() => onOpen(attempt)}
+                className="w-full rounded-lg border border-line bg-paper-raised px-4 py-3 text-left hover:border-accent"
+              >
+                <div className="flex items-center justify-between gap-3 text-xs text-ink-muted">
+                  <span>{formatDateTime(attempt.startedAt)}</span>
+                  <span>{STATUS_LABEL[attempt.status]}</span>
+                </div>
+                <p className="mt-2 line-clamp-2 font-serif text-sm leading-6 text-ink">
+                  {attempt.promptTitle}
+                </p>
+                <p className="mt-2 text-xs text-ink-muted">
+                  {QUESTION_TYPE_LABEL[attempt.promptType]} · {attempt.wordCount}{" "}
+                  / {TASK2_MIN_WORDS}語 · {formatClock(attempt.elapsedSeconds)}
+                </p>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

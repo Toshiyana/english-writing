@@ -1,101 +1,176 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { HistoryView } from "@/components/history-view";
+import { HomeView } from "@/components/home-view";
+import { ResultView } from "@/components/result-view";
+import { WriteView } from "@/components/write-view";
+import { pickPrompt, prompts } from "@/data/prompts";
+import {
+  findInProgress,
+  listAttempts,
+  saveAttempt,
+} from "@/lib/storage";
+import type { Attempt, QuestionType, View } from "@/lib/types";
+import { DEFAULT_DURATION_MINUTES } from "@/lib/types";
+import { countWords } from "@/lib/word-count";
+import { useEffect, useState } from "react";
+
+export default function Page() {
+  const [view, setView] = useState<View>("home");
+  const [typeFilter, setTypeFilter] = useState<QuestionType | "all">("all");
+  const [prompt, setPrompt] = useState(prompts[0] ?? pickPrompt("all"));
+  const [durationMinutes, setDurationMinutes] = useState(
+    DEFAULT_DURATION_MINUTES,
+  );
+  const [attempt, setAttempt] = useState<Attempt | null>(null);
+  const [paused, setPaused] = useState(false);
+  const [inProgress, setInProgress] = useState<Attempt | null>(null);
+  const [history, setHistory] = useState<Attempt[]>([]);
+
+  useEffect(() => {
+    setPrompt(pickPrompt("all"));
+    setInProgress(findInProgress());
+    setHistory(listAttempts());
+  }, []);
+
+  useEffect(() => {
+    setInProgress(findInProgress());
+    setHistory(listAttempts());
+  }, [view]);
+
+  const isWriting =
+    view === "write" && attempt !== null && !paused && attempt.submittedAt === null;
+
+  useEffect(() => {
+    if (!isWriting) return;
+    const timer = window.setInterval(() => {
+      setAttempt((current) => {
+        if (!current || current.submittedAt) return current;
+        const elapsedSeconds = current.elapsedSeconds + 1;
+        return {
+          ...current,
+          elapsedSeconds,
+          status:
+            elapsedSeconds >= current.durationSeconds
+              ? "time_up"
+              : current.status,
+        };
+      });
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [isWriting]);
+
+  useEffect(() => {
+    if (!attempt) return;
+    const timer = window.setTimeout(() => {
+      saveAttempt(attempt);
+    }, 800);
+    return () => window.clearTimeout(timer);
+  }, [attempt]);
+
+  function start() {
+    const next: Attempt = {
+      id: crypto.randomUUID(),
+      promptId: prompt.id,
+      promptTitle: prompt.title,
+      promptType: prompt.type,
+      body: "",
+      startedAt: new Date().toISOString(),
+      submittedAt: null,
+      elapsedSeconds: 0,
+      durationSeconds: durationMinutes * 60,
+      wordCount: 0,
+      status: "in_progress",
+    };
+    saveAttempt(next);
+    setAttempt(next);
+    setPaused(false);
+    setView("write");
+  }
+
+  function resume(target = findInProgress()) {
+    if (!target) return;
+    setAttempt(target);
+    setPaused(false);
+    setView("write");
+  }
+
+  function submit() {
+    if (!attempt) return;
+    const next: Attempt = {
+      ...attempt,
+      submittedAt: new Date().toISOString(),
+      wordCount: countWords(attempt.body),
+      status:
+        attempt.elapsedSeconds >= attempt.durationSeconds
+          ? "time_up"
+          : "completed",
+    };
+    saveAttempt(next);
+    setAttempt(next);
+    setView("result");
+  }
+
+  function openAttempt(target: Attempt) {
+    if (target.status === "in_progress") {
+      resume(target);
+      return;
+    }
+    setAttempt(target);
+    setView("result");
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <main className="min-h-[100dvh] px-4 py-8 sm:px-6">
+      {view === "home" ? (
+        <HomeView
+          prompt={prompt}
+          typeFilter={typeFilter}
+          durationMinutes={durationMinutes}
+          inProgress={inProgress}
+          onTypeFilter={(type) => {
+            setTypeFilter(type);
+            setPrompt(pickPrompt(type));
+          }}
+          onShuffle={() => setPrompt(pickPrompt(typeFilter))}
+          onDuration={setDurationMinutes}
+          onStart={start}
+          onResume={() => resume()}
+          onHistory={() => setView("history")}
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+      ) : null}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      {view === "write" && attempt ? (
+        <WriteView
+          attempt={attempt}
+          paused={paused}
+          remainingSeconds={attempt.durationSeconds - attempt.elapsedSeconds}
+          onBody={(body) =>
+            setAttempt({ ...attempt, body, wordCount: countWords(body) })
+          }
+          onTogglePause={() => setPaused((value) => !value)}
+          onSubmit={submit}
+        />
+      ) : null}
+
+      {view === "result" && attempt ? (
+        <ResultView
+          attempt={attempt}
+          onHome={() => setView("home")}
+          onAnother={() => {
+            setPrompt(pickPrompt(typeFilter));
+            setView("home");
+          }}
+        />
+      ) : null}
+
+      {view === "history" ? (
+        <HistoryView
+          attempts={history}
+          onBack={() => setView("home")}
+          onOpen={openAttempt}
+        />
+      ) : null}
+    </main>
   );
 }
