@@ -50,10 +50,6 @@ export default function Page() {
         return {
           ...current,
           elapsedSeconds,
-          status:
-            elapsedSeconds >= current.durationSeconds
-              ? "time_up"
-              : current.status,
         };
       });
     }, 1000);
