@@ -9,26 +9,6 @@ updates:
       time: "09:00"
       timezone: "Asia/Tokyo"
     groups:
-      next-react-security:
-        applies-to: "security-updates"
-        patterns:
-          - "next"
-          - "eslint-config-next"
-          - "react"
-          - "react-dom"
-          - "@types/react"
-          - "@types/react-dom"
-      other-security:
-        applies-to: "security-updates"
-        patterns:
-          - "*"
-        exclude-patterns:
-          - "next"
-          - "eslint-config-next"
-          - "react"
-          - "react-dom"
-          - "@types/react"
-          - "@types/react-dom"
       next-react:
         applies-to: "version-updates"
         patterns:
