@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="48" text-anchor="middle" font-size="24" font-weight="700">Public transport performance</text>
+    <g transform="translate(55 105)">
+      <rect width="890" height="410" rx="5" fill="#fffdf9" stroke="#cfc5b6" stroke-width="2"/>
+      <rect width="890" height="90" fill="#1f4d4a"/>
+      <g fill="#f7f3ea" font-size="15" font-weight="700" text-anchor="middle"><text x="100" y="53">City</text><text x="300" y="30">Passenger journeys</text><text x="300" y="51">per person</text><text x="250" y="75">2015</text><text x="350" y="75">2025</text><text x="650" y="30">Services arriving on time</text><text x="650" y="51">(%)</text><text x="600" y="75">2015</text><text x="700" y="75">2025</text></g>
+      <g stroke="#ddd4c6"><path d="M0 154H890M0 218H890M0 282H890M0 346H890M200 0V410M400 0V410M500 0V410M790 0V410M300 55V410M650 55V410"/></g>
+      <g font-size="18" text-anchor="middle"><text x="100" y="132">Alder</text><text x="250" y="132">86</text><text x="350" y="132">112</text><text x="600" y="132">81</text><text x="700" y="132">91</text><text x="100" y="196">Brook</text><text x="250" y="196">124</text><text x="350" y="196">119</text><text x="600" y="196">88</text><text x="700" y="196">86</text><text x="100" y="260">Cedar</text><text x="250" y="260">65</text><text x="350" y="260">94</text><text x="600" y="260">76</text><text x="700" y="260">89</text><text x="100" y="324">Dover</text><text x="250" y="324">142</text><text x="350" y="324">161</text><text x="600" y="324">93</text><text x="700" y="324">95</text><text x="100" y="388">Elm</text><text x="250" y="388">98</text><text x="350" y="388">137</text><text x="600" y="388">84</text><text x="700" y="388">90</text></g>
+    </g>
+    <text x="500" y="560" text-anchor="middle" font-size="14" fill="#6b6258">Figures cover buses, trams and urban rail.</text>
+  </g>
+</svg>

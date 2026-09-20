@@ -1,7 +1,7 @@
 import { type Attempt, attemptSchema } from "@/lib/types";
 import { z } from "zod";
 
-const KEY = "ew.attempts";
+const KEY = "ew.attempts.v2";
 
 function readAll(): Attempt[] {
   if (typeof window === "undefined") return [];

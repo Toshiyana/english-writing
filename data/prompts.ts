@@ -1,6 +1,12 @@
-import type { Prompt, QuestionType } from "@/lib/types";
+import { task1Prompts } from "@/data/task1-prompts";
+import type {
+  Prompt,
+  PromptType,
+  Task2Prompt,
+  WritingTask,
+} from "@/lib/types";
 
-export const prompts: Prompt[] = [
+const task2PromptData: Array<Omit<Task2Prompt, "task">> = [
   {
     id: "p01",
     type: "opinion",
@@ -143,10 +149,19 @@ export const prompts: Prompt[] = [
   },
 ];
 
-export function pickPrompt(type?: QuestionType | "all"): Prompt {
-  const pool =
-    type && type !== "all"
-      ? prompts.filter((prompt) => prompt.type === type)
-      : prompts;
+export const task2Prompts: Task2Prompt[] = task2PromptData.map((prompt) => ({
+  ...prompt,
+  task: "task2",
+}));
+
+export const prompts: Prompt[] = [...task1Prompts, ...task2Prompts];
+
+export function pickPrompt(
+  task: WritingTask,
+  type: PromptType | "all" = "all",
+): Prompt {
+  const pool = prompts.filter(
+    (prompt) => prompt.task === task && (type === "all" || prompt.type === type),
+  );
   return pool[Math.floor(Math.random() * pool.length)] ?? prompts[0];
 }

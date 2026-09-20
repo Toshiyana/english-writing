@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#1f4d4a"/></marker></defs>
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="48" text-anchor="middle" font-size="25" font-weight="700">Glass bottle recycling</text>
+    <g stroke="#1f4d4a" stroke-width="3" fill="none" marker-end="url(#a)"><path d="M210 185H295"/><path d="M455 185H540"/><path d="M700 185H785"/><path d="M865 245V340"/><path d="M785 405H700"/><path d="M540 405H455"/><path d="M295 405H210"/><path d="M130 340V245"/></g>
+    <g fill="#fffdf9" stroke="#cfc5b6" stroke-width="2"><rect x="50" y="125" width="160" height="120" rx="12"/><rect x="295" y="125" width="160" height="120" rx="12"/><rect x="540" y="125" width="160" height="120" rx="12"/><rect x="785" y="125" width="160" height="120" rx="12"/><rect x="785" y="340" width="160" height="120" rx="12"/><rect x="540" y="340" width="160" height="120" rx="12"/><rect x="295" y="340" width="160" height="120" rx="12"/><rect x="50" y="340" width="160" height="120" rx="12"/></g>
+    <g font-size="17" text-anchor="middle"><text x="130" y="178">1. Used bottles</text><text x="130" y="204">placed in bins</text><text x="375" y="178">2. Collected</text><text x="375" y="204">by truck</text><text x="620" y="178">3. Sorted</text><text x="620" y="204">by colour</text><text x="865" y="178">4. Crushed</text><text x="865" y="204">and cleaned</text><text x="865" y="393">5. Melted</text><text x="865" y="419">at 1,500°C</text><text x="620" y="393">6. Moulded into</text><text x="620" y="419">new bottles</text><text x="375" y="393">7. Filled and</text><text x="375" y="419">labelled</text><text x="130" y="393">8. Delivered</text><text x="130" y="419">to shops</text></g>
+    <text x="500" y="535" text-anchor="middle" font-size="15" fill="#6b6258">The cycle begins again when empty bottles are returned.</text>
+  </g>
+</svg>

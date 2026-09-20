@@ -13,8 +13,8 @@ const serif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "Task 2 練習",
-  description: "IELTS Academic Writing Task 2 の時間制限つき練習",
+  title: "IELTS Academic Writing 練習",
+  description: "IELTS Academic Writing Task 1・Task 2 の時間制限つき練習",
 };
 
 export default function RootLayout({

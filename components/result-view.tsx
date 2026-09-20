@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { PromptVisual } from "@/components/prompt-visual";
 import type { Attempt } from "@/lib/types";
-import { QUESTION_TYPE_LABEL } from "@/lib/types";
+import { PROMPT_TYPE_LABEL, TASK_CONFIG, TASK_LABEL } from "@/lib/types";
 import { formatClock, formatDateTime } from "@/lib/utils";
-import { TASK2_MIN_WORDS } from "@/lib/word-count";
 
 type ResultViewProps = {
   attempt: Attempt;
@@ -11,7 +11,8 @@ type ResultViewProps = {
 };
 
 export function ResultView({ attempt, onHome, onAnother }: ResultViewProps) {
-  const reached = attempt.wordCount >= TASK2_MIN_WORDS;
+  const minWords = TASK_CONFIG[attempt.task].minWords;
+  const reached = attempt.wordCount >= minWords;
   const withinTime = attempt.elapsedSeconds <= attempt.durationSeconds;
 
   return (
@@ -29,7 +30,7 @@ export function ResultView({ attempt, onHome, onAnother }: ResultViewProps) {
       <dl className="grid grid-cols-2 gap-3">
         <Stat
           label="語数"
-          value={`${attempt.wordCount} / ${TASK2_MIN_WORDS}`}
+          value={`${attempt.wordCount} / ${minWords}`}
           ok={reached}
           note={reached ? "到達" : "不足"}
         />
@@ -43,8 +44,9 @@ export function ResultView({ attempt, onHome, onAnother }: ResultViewProps) {
 
       <section className="rounded-lg border border-line bg-paper-raised p-5">
         <p className="text-xs text-ink-muted">
-          {QUESTION_TYPE_LABEL[attempt.promptType]}
+          {TASK_LABEL[attempt.task]} · {PROMPT_TYPE_LABEL[attempt.promptType]}
         </p>
+        {attempt.promptVisual ? <div className="mt-4"><PromptVisual visual={attempt.promptVisual} compact /></div> : null}
         <p className="mt-2 font-serif text-sm leading-7 text-ink">
           {attempt.promptTitle}
         </p>
