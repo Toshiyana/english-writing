@@ -5,31 +5,31 @@ import { HomeView } from "@/components/home-view";
 import { ResultView } from "@/components/result-view";
 import { TipsView } from "@/components/tips-view";
 import { WriteView } from "@/components/write-view";
-import { pickPrompt, prompts } from "@/data/prompts";
+import { pickPrompt } from "@/data/prompts";
+import { task1Prompts } from "@/data/task1-prompts";
 import {
   findInProgress,
   listAttempts,
   saveAttempt,
 } from "@/lib/storage";
-import type { Attempt, QuestionType, View } from "@/lib/types";
-import { DEFAULT_DURATION_MINUTES } from "@/lib/types";
+import type { Attempt, Prompt, PromptType, View, WritingTask } from "@/lib/types";
+import { TASK_CONFIG } from "@/lib/types";
 import { countWords } from "@/lib/word-count";
 import { useEffect, useState } from "react";
 
 export default function Page() {
   const [view, setView] = useState<View>("home");
-  const [typeFilter, setTypeFilter] = useState<QuestionType | "all">("all");
-  const [prompt, setPrompt] = useState(prompts[0] ?? pickPrompt("all"));
-  const [durationMinutes, setDurationMinutes] = useState(
-    DEFAULT_DURATION_MINUTES,
-  );
+  const [task, setTask] = useState<WritingTask>("task1");
+  const [typeFilter, setTypeFilter] = useState<PromptType | "all">("all");
+  const [prompt, setPrompt] = useState<Prompt>(task1Prompts[0]);
+  const [durationMinutes, setDurationMinutes] = useState<number>(TASK_CONFIG.task1.defaultDurationMinutes);
   const [attempt, setAttempt] = useState<Attempt | null>(null);
   const [paused, setPaused] = useState(false);
   const [inProgress, setInProgress] = useState<Attempt | null>(null);
   const [history, setHistory] = useState<Attempt[]>([]);
 
   useEffect(() => {
-    setPrompt(pickPrompt("all"));
+    setPrompt(pickPrompt("task1"));
     setInProgress(findInProgress());
     setHistory(listAttempts());
   }, []);
@@ -72,9 +72,11 @@ export default function Page() {
   function start() {
     const next: Attempt = {
       id: crypto.randomUUID(),
+      task: prompt.task,
       promptId: prompt.id,
       promptTitle: prompt.title,
       promptType: prompt.type,
+      promptVisual: prompt.task === "task1" ? prompt.visual : null,
       body: "",
       startedAt: new Date().toISOString(),
       submittedAt: null,
@@ -121,19 +123,28 @@ export default function Page() {
     setView("result");
   }
 
+  function changeTask(nextTask: WritingTask) {
+    setTask(nextTask);
+    setTypeFilter("all");
+    setDurationMinutes(TASK_CONFIG[nextTask].defaultDurationMinutes);
+    setPrompt(pickPrompt(nextTask));
+  }
+
   return (
     <main className="min-h-[100dvh] px-4 py-8 sm:px-6">
       {view === "home" ? (
         <HomeView
+          task={task}
           prompt={prompt}
           typeFilter={typeFilter}
           durationMinutes={durationMinutes}
           inProgress={inProgress}
+          onTask={changeTask}
           onTypeFilter={(type) => {
             setTypeFilter(type);
-            setPrompt(pickPrompt(type));
+            setPrompt(pickPrompt(task, type));
           }}
-          onShuffle={() => setPrompt(pickPrompt(typeFilter))}
+          onShuffle={() => setPrompt(pickPrompt(task, typeFilter))}
           onDuration={setDurationMinutes}
           onStart={start}
           onResume={() => resume()}
@@ -160,7 +171,10 @@ export default function Page() {
           attempt={attempt}
           onHome={() => setView("home")}
           onAnother={() => {
-            setPrompt(pickPrompt(typeFilter));
+            setTask(attempt.task);
+            setTypeFilter("all");
+            setDurationMinutes(TASK_CONFIG[attempt.task].defaultDurationMinutes);
+            setPrompt(pickPrompt(attempt.task));
             setView("home");
           }}
         />
@@ -174,7 +188,7 @@ export default function Page() {
         />
       ) : null}
 
-      {view === "tips" ? <TipsView onBack={() => setView("home")} /> : null}
+      {view === "tips" ? <TipsView task={task} onTask={changeTask} onBack={() => setView("home")} /> : null}
     </main>
   );
 }

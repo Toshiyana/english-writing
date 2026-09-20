@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <defs><marker id="b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#5d748c"/></marker></defs>
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="46" text-anchor="middle" font-size="25" font-weight="700">Rainwater collection and reuse</text>
+    <path d="M80 235L275 115L470 235Z" fill="#c9b9a3" stroke="#6b6258" stroke-width="3"/><rect x="125" y="235" width="300" height="190" fill="#fffdf9" stroke="#6b6258" stroke-width="3"/><rect x="250" y="315" width="65" height="110" fill="#dbe4e3"/>
+    <g stroke="#5d748c" stroke-width="5" fill="none" marker-end="url(#b)"><path d="M470 235V300H545"/><path d="M625 300H710V390"/><path d="M790 390H875V285"/><path d="M790 390H875V500"/></g>
+    <g fill="#dce9ed" stroke="#5d748c" stroke-width="3"><path d="M520 255H650V345H520Z"/><path d="M710 335Q750 305 790 335V450Q750 480 710 450Z"/></g>
+    <g fill="#fffdf9" stroke="#cfc5b6" stroke-width="2"><rect x="820" y="225" width="120" height="90" rx="10"/><rect x="820" y="455" width="120" height="90" rx="10"/></g>
+    <g fill="#5d748c"><circle cx="150" cy="110" r="7"/><circle cx="210" cy="80" r="7"/><circle cx="300" cy="90" r="7"/><circle cx="380" cy="120" r="7"/><path d="M145 122l-7 20h14zM205 92l-7 20h14zM295 102l-7 20h14zM375 132l-7 20h14z"/></g>
+    <g font-size="17" text-anchor="middle"><text x="275" y="470">Roof and gutters</text><text x="585" y="295">Filter</text><text x="585" y="319">leaves removed</text><text x="750" y="390">Storage</text><text x="750" y="414">tank</text><text x="880" y="260">Toilets</text><text x="880" y="286">inside building</text><text x="880" y="490">Garden</text><text x="880" y="516">irrigation</text></g>
+    <text x="500" y="585" text-anchor="middle" font-size="15" fill="#6b6258">An electric pump sends stored water to two non-drinking uses.</text>
+  </g>
+</svg>

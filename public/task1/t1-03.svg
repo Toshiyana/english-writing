@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="700">Electricity generated from renewable sources</text>
+    <text x="35" y="82" font-size="14">%</text>
+    <g stroke="#ddd4c6"><path d="M90 500H940M90 420H940M90 340H940M90 260H940M90 180H940M90 100H940"/></g>
+    <g fill="#6b6258" font-size="13"><text x="68" y="505">0</text><text x="60" y="425">10</text><text x="60" y="345">20</text><text x="60" y="265">30</text><text x="60" y="185">40</text><text x="60" y="105">50</text></g>
+    <g fill="#6b6258" font-size="14" text-anchor="middle"><text x="100" y="528">2000</text><text x="265" y="528">2005</text><text x="430" y="528">2010</text><text x="595" y="528">2015</text><text x="760" y="528">2020</text><text x="925" y="528">2025</text></g>
+    <polyline points="100,420 265,388 430,340 595,284 760,220 925,140" fill="none" stroke="#1f4d4a" stroke-width="5"/>
+    <polyline points="100,460 265,436 430,404 595,340 760,276 925,212" fill="none" stroke="#b56b36" stroke-width="5"/>
+    <polyline points="100,300 265,292 430,276 595,252 760,228 925,220" fill="none" stroke="#5d748c" stroke-width="5"/>
+    <polyline points="100,452 265,420 430,412 595,380 760,332 925,268" fill="none" stroke="#a6a05a" stroke-width="5"/>
+    <g font-size="14"><path d="M220 568h28" stroke="#1f4d4a" stroke-width="5"/><text x="255" y="573">Norland</text><path d="M365 568h28" stroke="#b56b36" stroke-width="5"/><text x="400" y="573">Estia</text><path d="M492 568h28" stroke="#5d748c" stroke-width="5"/><text x="527" y="573">Pelago</text><path d="M625 568h28" stroke="#a6a05a" stroke-width="5"/><text x="660" y="573">Varen</text></g>
+  </g>
+</svg>

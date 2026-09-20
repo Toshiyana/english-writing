@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="700">Commuters by main form of transport, 2025</text>
+    <text x="28" y="76" font-size="14">%</text>
+    <g stroke="#ddd4c6" stroke-width="1"><path d="M80 500H950M80 420H950M80 340H950M80 260H950M80 180H950M80 100H950"/></g>
+    <g font-size="13" fill="#6b6258"><text x="60" y="505">0</text><text x="52" y="425">10</text><text x="52" y="345">20</text><text x="52" y="265">30</text><text x="52" y="185">40</text><text x="52" y="105">50</text></g>
+    <g fill="#1f4d4a"><rect x="115" y="180" width="24" height="320"/><rect x="285" y="260" width="24" height="240"/><rect x="455" y="340" width="24" height="160"/><rect x="625" y="220" width="24" height="280"/><rect x="795" y="300" width="24" height="200"/></g>
+    <g fill="#b56b36"><rect x="142" y="340" width="24" height="160"/><rect x="312" y="300" width="24" height="200"/><rect x="482" y="260" width="24" height="240"/><rect x="652" y="340" width="24" height="160"/><rect x="822" y="300" width="24" height="200"/></g>
+    <g fill="#5d748c"><rect x="169" y="380" width="24" height="120"/><rect x="339" y="300" width="24" height="200"/><rect x="509" y="220" width="24" height="280"/><rect x="679" y="380" width="24" height="120"/><rect x="849" y="260" width="24" height="240"/></g>
+    <g fill="#a6a05a"><rect x="196" y="420" width="24" height="80"/><rect x="366" y="420" width="24" height="80"/><rect x="536" y="380" width="24" height="120"/><rect x="706" y="380" width="24" height="120"/><rect x="876" y="420" width="24" height="80"/></g>
+    <g font-size="15" text-anchor="middle"><text x="168" y="530">Alder</text><text x="338" y="530">Brook</text><text x="508" y="530">Cedar</text><text x="678" y="530">Dover</text><text x="848" y="530">Elm</text></g>
+    <g font-size="14"><rect x="260" y="565" width="16" height="16" fill="#1f4d4a"/><text x="284" y="578">Car</text><rect x="370" y="565" width="16" height="16" fill="#b56b36"/><text x="394" y="578">Bus</text><rect x="475" y="565" width="16" height="16" fill="#5d748c"/><text x="499" y="578">Rail</text><rect x="580" y="565" width="16" height="16" fill="#a6a05a"/><text x="604" y="578">Bicycle</text></g>
+  </g>
+</svg>
