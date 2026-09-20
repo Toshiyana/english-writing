@@ -39,7 +39,7 @@ export type Prompt = z.infer<typeof promptSchema>;
 export type AttemptStatus = z.infer<typeof attemptStatusSchema>;
 export type Attempt = z.infer<typeof attemptSchema>;
 
-export type View = "home" | "write" | "result" | "history";
+export type View = "home" | "write" | "result" | "history" | "tips";
 
 export const QUESTION_TYPE_LABEL: Record<QuestionType, string> = {
   opinion: "意見",
