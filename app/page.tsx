@@ -3,6 +3,7 @@
 import { HistoryView } from "@/components/history-view";
 import { HomeView } from "@/components/home-view";
 import { ResultView } from "@/components/result-view";
+import { TipsView } from "@/components/tips-view";
 import { WriteView } from "@/components/write-view";
 import { pickPrompt, prompts } from "@/data/prompts";
 import {
@@ -137,6 +138,7 @@ export default function Page() {
           onStart={start}
           onResume={() => resume()}
           onHistory={() => setView("history")}
+          onTips={() => setView("tips")}
         />
       ) : null}
 
@@ -171,6 +173,8 @@ export default function Page() {
           onOpen={openAttempt}
         />
       ) : null}
+
+      {view === "tips" ? <TipsView onBack={() => setView("home")} /> : null}
     </main>
   );
 }
