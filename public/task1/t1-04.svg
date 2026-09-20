@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="700">Monthly museum visitors</text>
+    <text x="25" y="82" font-size="14">thousands</text>
+    <g stroke="#ddd4c6"><path d="M90 500H950M90 420H950M90 340H950M90 260H950M90 180H950M90 100H950"/></g>
+    <g fill="#6b6258" font-size="13"><text x="70" y="505">0</text><text x="60" y="425">20</text><text x="60" y="345">40</text><text x="60" y="265">60</text><text x="60" y="185">80</text><text x="52" y="105">100</text></g>
+    <g fill="#6b6258" font-size="12" text-anchor="middle"><text x="100" y="526">Jan</text><text x="176" y="526">Feb</text><text x="252" y="526">Mar</text><text x="328" y="526">Apr</text><text x="404" y="526">May</text><text x="480" y="526">Jun</text><text x="556" y="526">Jul</text><text x="632" y="526">Aug</text><text x="708" y="526">Sep</text><text x="784" y="526">Oct</text><text x="860" y="526">Nov</text><text x="936" y="526">Dec</text></g>
+    <polyline points="100,356 176,348 252,332 328,308 404,284 480,236 556,204 632,220 708,276 784,308 860,332 936,340" fill="none" stroke="#1f4d4a" stroke-width="5"/>
+    <polyline points="100,388 176,372 252,356 328,340 404,324 480,300 556,284 632,276 708,292 784,316 860,340 936,364" fill="none" stroke="#b56b36" stroke-width="5"/>
+    <polyline points="100,420 176,412 252,404 328,388 404,364 480,332 556,300 632,260 708,292 784,356 860,396 936,412" fill="none" stroke="#5d748c" stroke-width="5"/>
+    <g font-size="14"><path d="M310 568h28" stroke="#1f4d4a" stroke-width="5"/><text x="345" y="573">City</text><path d="M440 568h28" stroke="#b56b36" stroke-width="5"/><text x="475" y="573">Science</text><path d="M585 568h28" stroke="#5d748c" stroke-width="5"/><text x="620" y="573">Maritime</text></g>
+  </g>
+</svg>

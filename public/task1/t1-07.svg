@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="58" text-anchor="middle" font-size="25" font-weight="700">University graduates and employment, 2024</text>
+    <g transform="translate(110 120)">
+      <rect width="780" height="390" rx="5" fill="#fffdf9" stroke="#cfc5b6" stroke-width="2"/>
+      <rect width="780" height="65" fill="#1f4d4a"/>
+      <g fill="#f7f3ea" font-size="17" font-weight="700" text-anchor="middle"><text x="130" y="40">Subject</text><text x="340" y="40">Graduates</text><text x="535" y="31">Employed within</text><text x="535" y="51">six months</text><text x="700" y="40">Women</text></g>
+      <g stroke="#ddd4c6"><path d="M0 130H780M0 195H780M0 260H780M0 325H780M260 0V390M430 0V390M640 0V390"/></g>
+      <g font-size="18" text-anchor="middle"><text x="130" y="106">Engineering</text><text x="340" y="106">1,240</text><text x="535" y="106">92%</text><text x="700" y="106">28%</text><text x="130" y="171">Business</text><text x="340" y="171">1,860</text><text x="535" y="171">84%</text><text x="700" y="171">54%</text><text x="130" y="236">Health</text><text x="340" y="236">980</text><text x="535" y="236">95%</text><text x="700" y="236">72%</text><text x="130" y="301">Arts</text><text x="340" y="301">1,520</text><text x="535" y="301">68%</text><text x="700" y="301">61%</text><text x="130" y="366">Science</text><text x="340" y="366">1,100</text><text x="535" y="366">81%</text><text x="700" y="366">49%</text></g>
+    </g>
+    <text x="500" y="555" text-anchor="middle" font-size="14" fill="#6b6258">Employment figures refer to full-time work or further study.</text>
+  </g>
+</svg>

@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { Attempt } from "@/lib/types";
-import { QUESTION_TYPE_LABEL } from "@/lib/types";
+import { PROMPT_TYPE_LABEL, TASK_CONFIG, TASK_LABEL } from "@/lib/types";
 import { formatClock, formatDateTime } from "@/lib/utils";
-import { TASK2_MIN_WORDS } from "@/lib/word-count";
 
 const STATUS_LABEL = {
   in_progress: "途中",
@@ -45,8 +44,8 @@ export function HistoryView({ attempts, onBack, onOpen }: HistoryViewProps) {
                   {attempt.promptTitle}
                 </p>
                 <p className="mt-2 text-xs text-ink-muted">
-                  {QUESTION_TYPE_LABEL[attempt.promptType]} · {attempt.wordCount}{" "}
-                  / {TASK2_MIN_WORDS}語 · {formatClock(attempt.elapsedSeconds)}
+                  {TASK_LABEL[attempt.task]} · {PROMPT_TYPE_LABEL[attempt.promptType]} · {attempt.wordCount}{" "}
+                  / {TASK_CONFIG[attempt.task].minWords}語 · {formatClock(attempt.elapsedSeconds)}
                 </p>
               </button>
             </li>
