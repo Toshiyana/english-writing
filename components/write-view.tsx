@@ -85,6 +85,22 @@ export function WriteView({
         <p className="mt-2 font-serif text-sm leading-7 text-ink">
           {attempt.promptTitle}
         </p>
+        <details className="group mt-4 border-t border-line pt-3">
+          <summary className="cursor-pointer list-none text-xs font-medium text-accent marker:content-none">
+            <span className="inline-flex items-center gap-2">
+              <span aria-hidden="true" className="text-base leading-none group-open:rotate-45">
+                ＋
+              </span>
+              書く前に確認
+            </span>
+          </summary>
+          <ul className="mt-3 grid gap-2 text-xs leading-5 text-ink-muted sm:grid-cols-2">
+            <li>□ 設問のすべての指示を確認した</li>
+            <li>□ 自分の立場を一文で言える</li>
+            <li>□ 各段落の中心となる主張を決めた</li>
+            <li>□ 最後の数分を見直しに残す</li>
+          </ul>
+        </details>
       </section>
 
       <textarea

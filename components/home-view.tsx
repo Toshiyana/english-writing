@@ -26,6 +26,7 @@ type HomeViewProps = {
   onStart: () => void;
   onResume: () => void;
   onHistory: () => void;
+  onTips: () => void;
 };
 
 export function HomeView({
@@ -39,6 +40,7 @@ export function HomeView({
   onStart,
   onResume,
   onHistory,
+  onTips,
 }: HomeViewProps) {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-8">
@@ -49,9 +51,14 @@ export function HomeView({
           </p>
           <h1 className="mt-1 font-serif text-3xl text-ink">Task 2 練習</h1>
         </div>
-        <Button variant="ghost" onClick={onHistory}>
-          履歴
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" onClick={onTips}>
+            Tips
+          </Button>
+          <Button variant="ghost" onClick={onHistory}>
+            履歴
+          </Button>
+        </div>
       </header>
 
       {inProgress ? (
