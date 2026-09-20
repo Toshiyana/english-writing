@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="700">Population and household water use, 2025</text>
+    <text x="25" y="86" font-size="14">population</text><text x="30" y="104" font-size="14">(millions)</text><text x="905" y="86" font-size="14">litres per</text><text x="905" y="104" font-size="14">person/day</text>
+    <g stroke="#ddd4c6"><path d="M100 490H900M100 410H900M100 330H900M100 250H900M100 170H900M100 90H900"/></g>
+    <g fill="#6b6258" font-size="13"><text x="80" y="495">0</text><text x="80" y="415">1</text><text x="80" y="335">2</text><text x="80" y="255">3</text><text x="80" y="175">4</text><text x="80" y="95">5</text><text x="915" y="495">0</text><text x="915" y="415">80</text><text x="915" y="335">160</text><text x="915" y="255">240</text><text x="915" y="175">320</text><text x="915" y="95">400</text></g>
+    <g fill="#8a9a96"><rect x="165" y="250" width="100" height="240"/><rect x="365" y="138" width="100" height="352"/><rect x="565" y="330" width="100" height="160"/><rect x="765" y="202" width="100" height="288"/></g>
+    <polyline points="215,270 415,370 615,210 815,310" fill="none" stroke="#b56b36" stroke-width="5"/><g fill="#b56b36"><circle cx="215" cy="270" r="8"/><circle cx="415" cy="370" r="8"/><circle cx="615" cy="210" r="8"/><circle cx="815" cy="310" r="8"/></g>
+    <g font-size="15" text-anchor="middle"><text x="215" y="522">Alder</text><text x="415" y="522">Brook</text><text x="615" y="522">Cedar</text><text x="815" y="522">Dover</text></g>
+    <g font-size="14"><rect x="320" y="562" width="18" height="18" fill="#8a9a96"/><text x="347" y="576">Population</text><path d="M510 571h30" stroke="#b56b36" stroke-width="5"/><text x="550" y="576">Water use</text></g>
+  </g>
+</svg>
