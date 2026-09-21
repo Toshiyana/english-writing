@@ -9,18 +9,6 @@ updates:
       time: "09:00"
       timezone: "Asia/Tokyo"
     groups:
-      next-react:
-        applies-to: "version-updates"
-        patterns:
-          - "next"
-          - "eslint-config-next"
-          - "react"
-          - "react-dom"
-          - "@types/react"
-          - "@types/react-dom"
-        update-types:
-          - "minor"
-          - "patch"
       routine-updates:
         applies-to: "version-updates"
         patterns:
@@ -28,6 +16,10 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
 
   - package-ecosystem: "github-actions"
     directory: "/"

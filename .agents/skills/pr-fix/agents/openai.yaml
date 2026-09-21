@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Fix"
+  short_description: "Fix review feedback and CI on an existing PR"
+  default_prompt: "Use $pr-fix to diagnose and repair this existing pull request."
