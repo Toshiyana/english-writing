@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/set-state-in-effect -- Browser-only storage is synchronized after hydration and navigation. */
+
 import { HistoryView } from "@/components/history-view";
 import { HomeView } from "@/components/home-view";
 import { ResultView } from "@/components/result-view";
