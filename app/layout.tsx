@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Source_Serif_4 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const sans = DM_Sans({
@@ -26,6 +28,8 @@ export default function RootLayout({
     <html lang="ja">
       <body className={`${sans.variable} ${serif.variable} font-sans antialiased`}>
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
