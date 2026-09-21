@@ -15,29 +15,43 @@ import {
 import type { Attempt, Prompt, PromptType, View, WritingTask } from "@/lib/types";
 import { TASK_CONFIG } from "@/lib/types";
 import { countWords } from "@/lib/word-count";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+
+const subscribeToClient = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+let initialClientPrompt: Prompt | undefined;
+
+function getInitialClientPrompt() {
+  initialClientPrompt ??= pickPrompt("task1");
+  return initialClientPrompt;
+}
+
+function getInitialServerPrompt() {
+  return task1Prompts[0];
+}
 
 export default function Page() {
   const [view, setView] = useState<View>("home");
   const [task, setTask] = useState<WritingTask>("task1");
   const [typeFilter, setTypeFilter] = useState<PromptType | "all">("all");
-  const [prompt, setPrompt] = useState<Prompt>(task1Prompts[0]);
+  const initialPrompt = useSyncExternalStore(
+    subscribeToClient,
+    getInitialClientPrompt,
+    getInitialServerPrompt,
+  );
+  const [selectedPrompt, setPrompt] = useState<Prompt | null>(null);
+  const prompt = selectedPrompt ?? initialPrompt;
   const [durationMinutes, setDurationMinutes] = useState<number>(TASK_CONFIG.task1.defaultDurationMinutes);
   const [attempt, setAttempt] = useState<Attempt | null>(null);
   const [paused, setPaused] = useState(false);
-  const [inProgress, setInProgress] = useState<Attempt | null>(null);
-  const [history, setHistory] = useState<Attempt[]>([]);
-
-  useEffect(() => {
-    setPrompt(pickPrompt("task1"));
-    setInProgress(findInProgress());
-    setHistory(listAttempts());
-  }, []);
-
-  useEffect(() => {
-    setInProgress(findInProgress());
-    setHistory(listAttempts());
-  }, [view]);
+  const isClient = useSyncExternalStore(
+    subscribeToClient,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
+  const inProgress = isClient && view === "home" ? findInProgress() : null;
+  const history = isClient && view === "history" ? listAttempts() : [];
 
   const isWriting =
     view === "write" && attempt !== null && !paused && attempt.submittedAt === null;
