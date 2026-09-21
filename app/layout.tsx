@@ -4,12 +4,12 @@ import "./globals.css";
 
 const sans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--app-font-sans",
 });
 
 const serif = Source_Serif_4({
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--app-font-serif",
 });
 
 export const metadata: Metadata = {
