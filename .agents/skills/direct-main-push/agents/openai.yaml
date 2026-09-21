@@ -1,0 +1,4 @@
+interface:
+  display_name: "Direct Main Push"
+  short_description: "Validate, commit, and push changes directly to main"
+  default_prompt: "Use $direct-main-push to validate these changes, commit them, and push directly to main without creating a branch."
