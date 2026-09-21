@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Create"
+  short_description: "Validate changes and open a focused pull request"
+  default_prompt: "Use $pr-create to validate these changes, commit and push them, and open a new pull request."

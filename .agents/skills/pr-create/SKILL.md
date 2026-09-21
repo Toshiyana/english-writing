@@ -1,17 +1,17 @@
 ---
-name: pr-ready
-description: Prepare finished local or Codex-worktree changes for a new pull request, including branch setup, focused validation, commit, push, and PR creation. Use when the user asks to make work PR-ready or open a new PR; do not use for repairing an existing PR.
+name: pr-create
+description: Take finished local or Codex-worktree changes all the way to a newly opened pull request, including branch setup, focused validation, commit, push, and PR creation. Use when the user asks to make work PR-ready or open a new PR; do not use for review-only requests or repairing an existing PR.
 ---
 
-# PR Ready
+# PR Create
 
-Turn the intended working-tree changes into one reviewable pull request without absorbing unrelated work.
+Turn the intended working-tree changes into one reviewable, opened pull request without absorbing unrelated work. PR creation is the completion condition; do not stop at a local commit or pushed branch when the required access and credentials are available.
 
-## Authorization boundary
+## Authorization and completion boundary
 
-- A request to "prepare" or "check" changes does not authorize committing, pushing, or creating a PR. Stop after validation and report the exact next actions.
-- A request to "create", "open", "submit", or "push" the PR authorizes the corresponding scoped Git and GitHub mutations.
-- Immediately before any mutation not already explicit in the current request, ask for authorization. Never force-push, rewrite shared history, merge, or delete a branch unless explicitly requested.
+- Invoking `$pr-create` or asking to make finished changes "PR-ready" authorizes the scoped branch creation, commit, normal push, and PR creation needed to complete this workflow. Do not ask for separate confirmation for those steps.
+- A request limited to reviewing, checking, or validating changes is outside this skill's mutating workflow. Perform only the requested read-only work instead of invoking this skill.
+- Never force-push, rewrite shared history, merge, close a PR, or delete a branch unless explicitly requested. Stop at the relevant blocker if completion would require one of those actions.
 
 ## Establish the Git state
 
@@ -42,7 +42,7 @@ Perform a focused review against the base branch before committing. Resolve cons
 
 ## Commit, push, and open the PR
 
-When authorized:
+After validation:
 
 1. Stage only the intended paths and inspect the staged diff.
 2. Create a concise commit consistent with the repository's existing history. Do not amend an unrelated commit.
@@ -50,9 +50,9 @@ When authorized:
 4. Push with an upstream using a normal non-force push.
 5. Create the PR with the established base branch. Prefer an available GitHub integration; otherwise use `gh pr create`.
 6. Write a useful PR body with `Summary`, `Validation`, and `Risks / Notes`. Include screenshots or reproduction details when the change is visual or behavioral.
-7. Attach or return the PR URL. Do not merge the PR unless separately requested.
+7. Attach the created PR to the current task when that capability is available, and return the PR URL. Do not merge the PR unless separately requested.
 
-Stop and report instead of guessing if the base branch is ambiguous, the branch is owned by another worktree, required validation cannot run, credentials are unavailable, or the remote has diverged in a way that would require history rewriting.
+Do not treat a successful commit or push as completion. Stop and report instead of guessing only if the base branch is ambiguous, the branch is owned by another worktree, required validation cannot run, credentials or PR-creation tooling are unavailable, an existing PR must be repaired instead, or the remote has diverged in a way that would require history rewriting.
 
 ## Final report
 
