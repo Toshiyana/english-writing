@@ -1,52 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IELTS Academic Writing 練習
 
-## Getting Started
+Next.jsで作られたIELTS Academic Writing Task 1・Task 2の練習アプリです。ログインしなくてもすべての練習機能を利用でき、Supabase Authを設定すると任意でアカウントを作成・ログインできます。
 
-First, run the development server:
+## ローカル起動
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+node .codex/setup.mjs
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[http://localhost:3000](http://localhost:3000) を開いてください。
+
+## Supabase Authの設定
+
+1. Supabaseでプロジェクトを作成します。
+2. Supabase Dashboardの **Connect** からProject URLとPublishable keyを取得します。Secret keyや`service_role` keyはブラウザへ公開しないでください。
+3. `.env.example`を`.env.local`へコピーし、値を設定します。
+
+```dotenv
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your-key
+```
+
+4. Supabase Dashboardの **Authentication > URL Configuration** でSite URLを設定します。ローカル開発では `http://localhost:3000`、本番では実際の公開URLを指定してください。
+5. 必要に応じてRedirect URLsへローカルURLと本番URLを追加します。
+6. 開発サーバーを再起動します。
+
+メール確認が有効な場合、新規登録後に確認メールが送信されます。パスワード再設定メールも同じSite URL／Redirect URLs設定を使用するため、本番URLが許可されていることを確認してください。本番運用では、AuthenticationのSMTP SettingsからカスタムSMTPを設定してください。
+
+未ログイン時の練習履歴は引き続きブラウザのローカルストレージに保存されます。ログイン済み履歴のクラウド同期はまだ行いません。
 
 ## Secret scanning
 
-[Betterleaks](https://github.com/betterleaks/betterleaks) scans staged changes before each commit and scans the full Git history in CI. The local hook runs the version-pinned official container through a cross-platform Node wrapper, so the same configuration works in regular clones and Git worktrees on Windows, macOS, and Linux without installing Go or Betterleaks directly.
-
-Install [pre-commit](https://pre-commit.com/) and Docker, then enable the repository hook:
+[Betterleaks](https://github.com/betterleaks/betterleaks)は、コミット前にステージ済みの変更を、CIではGit履歴全体を検査します。ローカルフックを利用する場合はpre-commitとDockerをインストールし、次を実行してください。
 
 ```bash
 pre-commit install
 ```
 
-To run the staged-change hook manually, use:
+手動で実行する場合：
 
 ```bash
 pre-commit run betterleaks
 ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 確認コマンド
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm lint
+pnpm typecheck
+pnpm build
+```

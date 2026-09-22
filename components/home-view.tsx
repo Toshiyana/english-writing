@@ -1,3 +1,4 @@
+import { AuthMenu } from "@/components/auth-menu";
 import { PromptVisual } from "@/components/prompt-visual";
 import { Button } from "@/components/ui/button";
 import type { Attempt, Prompt, PromptType, Task1VisualType, Task2QuestionType, WritingTask } from "@/lib/types";
@@ -34,7 +35,7 @@ export function HomeView({ task, prompt, typeFilter, durationMinutes, inProgress
           <p className="text-xs tracking-[0.18em] text-ink-muted uppercase">IELTS Academic</p>
           <h1 className="mt-1 font-serif text-3xl text-ink">Writing 練習</h1>
         </div>
-        <div className="flex items-center gap-1"><Button variant="ghost" onClick={onTips}>Tips</Button><Button variant="ghost" onClick={onHistory}>履歴</Button></div>
+        <div className="flex items-center gap-1"><AuthMenu /><Button variant="ghost" onClick={onTips}>Tips</Button><Button variant="ghost" onClick={onHistory}>履歴</Button></div>
       </header>
 
       {inProgress ? (
