@@ -20,12 +20,12 @@ const MODE_COPY: Record<
   "sign-in": {
     title: "ログイン",
     description:
-      "ログインは任意です。閉じても、すべての練習機能をそのまま利用できます。",
+      "ログインすると、途中経過の自動保存と練習履歴を利用できます。未ログインでも練習は可能です。",
   },
   "sign-up": {
     title: "アカウント作成",
     description:
-      "メールアドレスとパスワードでアカウントを作成します。",
+      "アカウントを作成すると、練習の途中経過と提出履歴を保存できます。",
   },
   "forgot-password": {
     title: "パスワードを再設定",
@@ -278,7 +278,7 @@ export function AuthMenu() {
 
             {!isSupabaseConfigured ? (
               <p className="mt-5 rounded-md bg-warn-soft px-3 py-2 text-sm text-warn">
-                Supabaseの環境変数が未設定です。READMEの手順に沿って設定してください。
+                ログイン機能の設定が完了していません。管理者にお問い合わせください。
               </p>
             ) : (
               <form className="mt-5 grid gap-4" onSubmit={submit}>
