@@ -1,0 +1,2 @@
+# Reuse Next.js incremental build data in new Codex-managed worktrees.
+.next/cache/
