@@ -20,7 +20,7 @@ type AttemptRow = {
 
 async function getSession(): Promise<Session | null> {
   if (!supabase) {
-    throw new Error("Supabaseの環境変数が設定されていません。");
+    throw new Error("保存機能の設定が完了していません。");
   }
 
   const { data, error } = await supabase.auth.getSession();

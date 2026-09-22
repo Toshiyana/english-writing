@@ -65,7 +65,7 @@ export function ResultView({ attempt, isAuthenticated, onHome, onAnother }: Resu
         <section className="rounded-lg border border-line bg-paper-raised p-4">
           <p className="text-sm font-medium text-ink">この回答を履歴に残す</p>
           <p className="mt-1 text-sm leading-6 text-ink-muted">
-            ログインすると、この回答をSupabaseへ保存し、次回から途中経過と履歴を利用できます。
+            ログインすると、この回答を保存し、次回から途中経過と履歴を利用できます。
           </p>
           <div className="mt-3">
             <AuthMenu />

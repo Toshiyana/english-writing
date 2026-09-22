@@ -31,7 +31,7 @@ export function HistoryView({ attempts, isAuthenticated, onBack, onOpen }: Histo
         <section className="rounded-lg border border-line bg-paper-raised p-5">
           <p className="text-sm font-medium text-ink">履歴の利用にはログインが必要です</p>
           <p className="mt-1 text-sm leading-6 text-ink-muted">
-            ゲスト中の回答は保存されません。ログイン後の練習はSupabaseへ自動保存されます。
+            ゲスト中の回答は保存されません。ログイン後の練習は自動保存されます。
           </p>
           <div className="mt-4">
             <AuthMenu />

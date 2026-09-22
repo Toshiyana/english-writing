@@ -72,7 +72,7 @@ export function WriteView({ attempt, paused, isAuthenticated, remainingSeconds, 
             <span className={reached ? "text-ok" : "text-ink-muted"}>{attempt.wordCount} / {minWords} words{reached ? " · 最低語数に到達" : " · 不足"}</span>
             <span className="text-xs text-ink-muted">
               {isAuthenticated
-                ? "Supabaseへ自動保存しています"
+                ? "自動保存しています"
                 : "ゲスト利用中 · この回答は保存されません"}
             </span>
           </footer>
