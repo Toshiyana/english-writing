@@ -1,6 +1,6 @@
 # IELTS Academic Writing 練習
 
-Next.jsで作られたIELTS Academic Writing Task 1・Task 2の練習アプリです。ログインしなくてもすべての練習機能を利用でき、Supabase Authを設定すると任意でアカウントを作成・ログインできます。
+Next.jsで作られたIELTS Academic Writing Task 1・Task 2の練習アプリです。ログインしなくても練習できますが、途中経過と履歴をSupabase Databaseへ保存するにはログインが必要です。
 
 ## ローカル起動
 
@@ -11,7 +11,7 @@ pnpm dev
 
 [http://localhost:3000](http://localhost:3000) を開いてください。
 
-## Supabase Authの設定
+## Supabaseの設定
 
 1. Supabaseでプロジェクトを作成します。
 2. Supabase Dashboardの **Connect** からProject URLとPublishable keyを取得します。Secret keyや`service_role` keyはブラウザへ公開しないでください。
@@ -24,11 +24,13 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your-key
 
 4. Supabase Dashboardの **Authentication > URL Configuration** でSite URLを設定します。ローカル開発では `http://localhost:3000`、本番では実際の公開URLを指定してください。
 5. 必要に応じてRedirect URLsへローカルURLと本番URLを追加します。
-6. 開発サーバーを再起動します。
+6. **Authentication > Providers > Email** が有効になっていることを確認します。Anonymous Sign-InsとManual Linkingは使用しません。
+7. `supabase/migrations/20260922160751_create_writing_attempts.sql`を適用します（接続済みの`english-writing-app`プロジェクトには適用済みです）。
+8. 開発サーバーを再起動します。
 
-メール確認が有効な場合、新規登録後に確認メールが送信されます。パスワード再設定メールも同じSite URL／Redirect URLs設定を使用するため、本番URLが許可されていることを確認してください。本番運用では、AuthenticationのSMTP SettingsからカスタムSMTPを設定してください。
+未ログインでもTask 1・Task 2を最後まで利用できますが、回答は現在のタブのメモリだけに保持されます。再読み込みやタブを閉じると消え、履歴と途中再開は利用できません。ログイン中の練習だけがSupabaseへ自動保存されます。練習中や提出後にログインした場合は、その時点で開いている回答も保存されます。
 
-未ログイン時の練習履歴は引き続きブラウザのローカルストレージに保存されます。ログイン済み履歴のクラウド同期はまだ行いません。
+メール確認とパスワード再設定はSite URL／Redirect URLs設定を使用します。本番運用では、AuthenticationのSMTP SettingsからカスタムSMTPを設定してください。
 
 ## Secret scanning
 

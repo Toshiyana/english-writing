@@ -7,19 +7,14 @@ import { TipsView } from "@/components/tips-view";
 import { WriteView } from "@/components/write-view";
 import { pickPrompt } from "@/data/prompts";
 import { task1Prompts } from "@/data/task1-prompts";
-import {
-  findInProgress,
-  listAttempts,
-  saveAttempt,
-} from "@/lib/storage";
+import { listAttempts, saveAttempt } from "@/lib/storage";
+import { supabase } from "@/lib/supabase/client";
 import type { Attempt, Prompt, PromptType, View, WritingTask } from "@/lib/types";
 import { TASK_CONFIG } from "@/lib/types";
 import { countWords } from "@/lib/word-count";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 const subscribeToClient = () => () => {};
-const getClientSnapshot = () => true;
-const getServerSnapshot = () => false;
 let initialClientPrompt: Prompt | undefined;
 
 function getInitialClientPrompt() {
@@ -44,14 +39,93 @@ export default function Page() {
   const prompt = selectedPrompt ?? initialPrompt;
   const [durationMinutes, setDurationMinutes] = useState<number>(TASK_CONFIG.task1.defaultDurationMinutes);
   const [attempt, setAttempt] = useState<Attempt | null>(null);
+  const [attempts, setAttempts] = useState<Attempt[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [storageLoading, setStorageLoading] = useState(true);
+  const [storageError, setStorageError] = useState<string | null>(null);
   const [paused, setPaused] = useState(false);
-  const isClient = useSyncExternalStore(
-    subscribeToClient,
-    getClientSnapshot,
-    getServerSnapshot,
+  const inProgress =
+    attempts.find((item) => item.status === "in_progress") ?? null;
+
+  const refreshAttempts = useCallback(async () => {
+    try {
+      const next = await listAttempts();
+      setAttempts(next);
+      setStorageError(null);
+    } catch (error) {
+      setStorageError(
+        error instanceof Error ? error.message : "履歴を読み込めませんでした。",
+      );
+    } finally {
+      setStorageLoading(false);
+    }
+  }, []);
+
+  const cacheAttempt = useCallback((saved: Attempt) => {
+    setAttempts((current) => {
+      const rest = current.filter((item) => item.id !== saved.id);
+      return [saved, ...rest].sort((a, b) =>
+        a.startedAt < b.startedAt ? 1 : -1,
+      );
+    });
+  }, []);
+
+  const persistAttempt = useCallback(
+    async (target: Attempt) => {
+      if (!userId) return;
+
+      try {
+        const saved = await saveAttempt(target);
+        if (saved) cacheAttempt(saved);
+        setStorageError(null);
+      } catch (error) {
+        setStorageError(
+          error instanceof Error ? error.message : "自動保存に失敗しました。",
+        );
+      }
+    },
+    [cacheAttempt, userId],
   );
-  const inProgress = isClient && view === "home" ? findInProgress() : null;
-  const history = isClient && view === "history" ? listAttempts() : [];
+
+  useEffect(() => {
+    const client = supabase;
+    const initialLoad = window.setTimeout(() => {
+      if (!client) {
+        void refreshAttempts();
+        return;
+      }
+
+      void client.auth.getSession().then(async ({ data, error }) => {
+        if (error) {
+          setStorageError(error.message);
+          setStorageLoading(false);
+          return;
+        }
+
+        if (data.session?.user.is_anonymous) {
+          await client.auth.signOut();
+          setUserId(null);
+        } else {
+          setUserId(data.session?.user.id ?? null);
+        }
+        await refreshAttempts();
+      });
+    }, 0);
+    if (!client) return () => window.clearTimeout(initialLoad);
+
+    const { data } = client.auth.onAuthStateChange((_event, session) => {
+      if (session?.user.is_anonymous) {
+        void client.auth.signOut();
+        return;
+      }
+      setUserId(session?.user.id ?? null);
+      void refreshAttempts();
+    });
+    return () => {
+      window.clearTimeout(initialLoad);
+      data.subscription.unsubscribe();
+    };
+  }, [refreshAttempts]);
 
   const isWriting =
     view === "write" && attempt !== null && !paused && attempt.submittedAt === null;
@@ -76,12 +150,12 @@ export default function Page() {
   }, [isWriting]);
 
   useEffect(() => {
-    if (!attempt) return;
+    if (!attempt || !userId) return;
     const timer = window.setTimeout(() => {
-      saveAttempt(attempt);
+      void persistAttempt(attempt);
     }, 800);
     return () => window.clearTimeout(timer);
-  }, [attempt]);
+  }, [attempt, persistAttempt, userId]);
 
   function start() {
     const next: Attempt = {
@@ -99,13 +173,13 @@ export default function Page() {
       wordCount: 0,
       status: "in_progress",
     };
-    saveAttempt(next);
+    void persistAttempt(next);
     setAttempt(next);
     setPaused(false);
     setView("write");
   }
 
-  function resume(target = findInProgress()) {
+  function resume(target = inProgress) {
     if (!target) return;
     setAttempt(target);
     setPaused(false);
@@ -123,7 +197,7 @@ export default function Page() {
           ? "time_up"
           : "completed",
     };
-    saveAttempt(next);
+    void persistAttempt(next);
     setAttempt(next);
     setView("result");
   }
@@ -146,6 +220,19 @@ export default function Page() {
 
   return (
     <main className="min-h-[100dvh] px-4 py-8 sm:px-6">
+      {storageLoading ? (
+        <p className="mx-auto mb-4 max-w-3xl text-sm text-ink-muted">
+          履歴を読み込んでいます…
+        </p>
+      ) : null}
+      {storageError ? (
+        <p
+          role="alert"
+          className="mx-auto mb-4 max-w-3xl rounded-md bg-warn-soft px-3 py-2 text-sm text-warn"
+        >
+          データを保存できません: {storageError}
+        </p>
+      ) : null}
       {view === "home" ? (
         <HomeView
           task={task}
@@ -153,6 +240,7 @@ export default function Page() {
           typeFilter={typeFilter}
           durationMinutes={durationMinutes}
           inProgress={inProgress}
+          isAuthenticated={Boolean(userId)}
           onTask={changeTask}
           onTypeFilter={(type) => {
             setTypeFilter(type);
@@ -171,6 +259,7 @@ export default function Page() {
         <WriteView
           attempt={attempt}
           paused={paused}
+          isAuthenticated={Boolean(userId)}
           remainingSeconds={attempt.durationSeconds - attempt.elapsedSeconds}
           onBody={(body) =>
             setAttempt({ ...attempt, body, wordCount: countWords(body) })
@@ -183,6 +272,7 @@ export default function Page() {
       {view === "result" && attempt ? (
         <ResultView
           attempt={attempt}
+          isAuthenticated={Boolean(userId)}
           onHome={() => setView("home")}
           onAnother={() => {
             setTask(attempt.task);
@@ -196,7 +286,8 @@ export default function Page() {
 
       {view === "history" ? (
         <HistoryView
-          attempts={history}
+          attempts={attempts}
+          isAuthenticated={Boolean(userId)}
           onBack={() => setView("home")}
           onOpen={openAttempt}
         />

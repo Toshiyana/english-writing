@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { AuthMenu } from "@/components/auth-menu";
 import type { Attempt } from "@/lib/types";
 import { PROMPT_TYPE_LABEL, TASK_CONFIG, TASK_LABEL } from "@/lib/types";
 import { formatClock, formatDateTime } from "@/lib/utils";
@@ -11,11 +12,12 @@ const STATUS_LABEL = {
 
 type HistoryViewProps = {
   attempts: Attempt[];
+  isAuthenticated: boolean;
   onBack: () => void;
   onOpen: (attempt: Attempt) => void;
 };
 
-export function HistoryView({ attempts, onBack, onOpen }: HistoryViewProps) {
+export function HistoryView({ attempts, isAuthenticated, onBack, onOpen }: HistoryViewProps) {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       <header className="flex items-center justify-between">
@@ -25,7 +27,17 @@ export function HistoryView({ attempts, onBack, onOpen }: HistoryViewProps) {
         </Button>
       </header>
 
-      {attempts.length === 0 ? (
+      {!isAuthenticated ? (
+        <section className="rounded-lg border border-line bg-paper-raised p-5">
+          <p className="text-sm font-medium text-ink">履歴の利用にはログインが必要です</p>
+          <p className="mt-1 text-sm leading-6 text-ink-muted">
+            ゲスト中の回答は保存されません。ログイン後の練習はSupabaseへ自動保存されます。
+          </p>
+          <div className="mt-4">
+            <AuthMenu />
+          </div>
+        </section>
+      ) : attempts.length === 0 ? (
         <p className="text-sm text-ink-muted">まだ提出した練習はありません。</p>
       ) : (
         <ul className="flex flex-col gap-2">

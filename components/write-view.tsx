@@ -8,6 +8,7 @@ import { Pause, Play } from "lucide-react";
 type WriteViewProps = {
   attempt: Attempt;
   paused: boolean;
+  isAuthenticated: boolean;
   remainingSeconds: number;
   onBody: (body: string) => void;
   onTogglePause: () => void;
@@ -28,7 +29,7 @@ const TASK2_CHECKS = [
   "最後の数分を見直しに残す",
 ] as const;
 
-export function WriteView({ attempt, paused, remainingSeconds, onBody, onTogglePause, onSubmit }: WriteViewProps) {
+export function WriteView({ attempt, paused, isAuthenticated, remainingSeconds, onBody, onTogglePause, onSubmit }: WriteViewProps) {
   const overtime = remainingSeconds <= 0;
   const warn = remainingSeconds > 0 && remainingSeconds <= 5 * 60;
   const minWords = TASK_CONFIG[attempt.task].minWords;
@@ -69,7 +70,11 @@ export function WriteView({ attempt, paused, remainingSeconds, onBody, onToggleP
           <textarea value={attempt.body} onChange={(event) => onBody(event.target.value)} placeholder={attempt.task === "task1" ? "Write your report here." : "Write your essay here."} className="min-h-[30rem] flex-1 resize-none rounded-lg border border-line bg-paper-raised p-4 font-serif text-base leading-8 text-ink outline-none placeholder:text-ink-muted/50 focus:border-accent" />
           <footer className="flex items-center justify-between text-sm">
             <span className={reached ? "text-ok" : "text-ink-muted"}>{attempt.wordCount} / {minWords} words{reached ? " · 最低語数に到達" : " · 不足"}</span>
-            <span className="text-xs text-ink-muted">自動保存しています</span>
+            <span className="text-xs text-ink-muted">
+              {isAuthenticated
+                ? "Supabaseへ自動保存しています"
+                : "ゲスト利用中 · この回答は保存されません"}
+            </span>
           </footer>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { AuthMenu } from "@/components/auth-menu";
 import { PromptVisual } from "@/components/prompt-visual";
 import type { Attempt } from "@/lib/types";
 import { PROMPT_TYPE_LABEL, TASK_CONFIG, TASK_LABEL } from "@/lib/types";
@@ -6,11 +7,12 @@ import { formatClock, formatDateTime } from "@/lib/utils";
 
 type ResultViewProps = {
   attempt: Attempt;
+  isAuthenticated: boolean;
   onHome: () => void;
   onAnother: () => void;
 };
 
-export function ResultView({ attempt, onHome, onAnother }: ResultViewProps) {
+export function ResultView({ attempt, isAuthenticated, onHome, onAnother }: ResultViewProps) {
   const minWords = TASK_CONFIG[attempt.task].minWords;
   const reached = attempt.wordCount >= minWords;
   const withinTime = attempt.elapsedSeconds <= attempt.durationSeconds;
@@ -58,6 +60,18 @@ export function ResultView({ attempt, onHome, onAnother }: ResultViewProps) {
           {attempt.body || "（未入力）"}
         </p>
       </section>
+
+      {!isAuthenticated ? (
+        <section className="rounded-lg border border-line bg-paper-raised p-4">
+          <p className="text-sm font-medium text-ink">この回答を履歴に残す</p>
+          <p className="mt-1 text-sm leading-6 text-ink-muted">
+            ログインすると、この回答をSupabaseへ保存し、次回から途中経過と履歴を利用できます。
+          </p>
+          <div className="mt-3">
+            <AuthMenu />
+          </div>
+        </section>
+      ) : null}
 
       <div className="flex flex-wrap gap-3">
         <Button onClick={onAnother}>もう1題</Button>

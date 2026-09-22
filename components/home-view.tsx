@@ -14,6 +14,7 @@ type HomeViewProps = {
   typeFilter: PromptType | "all";
   durationMinutes: number;
   inProgress: Attempt | null;
+  isAuthenticated: boolean;
   onTask: (task: WritingTask) => void;
   onTypeFilter: (type: PromptType | "all") => void;
   onShuffle: () => void;
@@ -24,7 +25,7 @@ type HomeViewProps = {
   onTips: () => void;
 };
 
-export function HomeView({ task, prompt, typeFilter, durationMinutes, inProgress, onTask, onTypeFilter, onShuffle, onDuration, onStart, onResume, onHistory, onTips }: HomeViewProps) {
+export function HomeView({ task, prompt, typeFilter, durationMinutes, inProgress, isAuthenticated, onTask, onTypeFilter, onShuffle, onDuration, onStart, onResume, onHistory, onTips }: HomeViewProps) {
   const filters = task === "task1" ? TASK1_FILTERS : TASK2_FILTERS;
   const config = TASK_CONFIG[task];
 
@@ -37,6 +38,15 @@ export function HomeView({ task, prompt, typeFilter, durationMinutes, inProgress
         </div>
         <div className="flex items-center gap-1"><AuthMenu /><Button variant="ghost" onClick={onTips}>Tips</Button><Button variant="ghost" onClick={onHistory}>履歴</Button></div>
       </header>
+
+      {!isAuthenticated ? (
+        <section className="rounded-lg border border-line bg-paper-raised px-4 py-3 text-sm leading-6 text-ink-muted">
+          <p className="font-medium text-ink">ゲストとして練習できます</p>
+          <p>
+            未ログイン中は、この画面を閉じると回答が消え、履歴や途中保存も利用できません。ログインするとSupabaseへ自動保存されます。
+          </p>
+        </section>
+      ) : null}
 
       {inProgress ? (
         <section className="rounded-lg border border-line bg-paper-raised p-4">
