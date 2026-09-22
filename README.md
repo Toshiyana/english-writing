@@ -16,6 +16,22 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Secret scanning
+
+[Betterleaks](https://github.com/betterleaks/betterleaks) scans staged changes before each commit and scans the full Git history in CI. The local hook runs the version-pinned official container through a cross-platform Node wrapper, so the same configuration works in regular clones and Git worktrees on Windows, macOS, and Linux without installing Go or Betterleaks directly.
+
+Install [pre-commit](https://pre-commit.com/) and Docker, then enable the repository hook:
+
+```bash
+pre-commit install
+```
+
+To run the staged-change hook manually, use:
+
+```bash
+pre-commit run betterleaks
+```
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
