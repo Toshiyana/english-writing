@@ -1,0 +1,3 @@
+allowBuilds:
+  # Required by eslint-import-resolver-typescript for its native resolver binding.
+  unrs-resolver: true
