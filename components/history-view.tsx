@@ -50,7 +50,7 @@ export function HistoryView({ attempts, isAuthenticated, onBack, onOpen }: Histo
               >
                 <div className="flex items-center justify-between gap-3 text-xs text-ink-muted">
                   <span>{formatDateTime(attempt.startedAt)}</span>
-                  <span>{STATUS_LABEL[attempt.status]}</span>
+                  <span>{attempt.sourceAttemptId ? "書き直し · " : ""}{STATUS_LABEL[attempt.status]}</span>
                 </div>
                 <p className="mt-2 line-clamp-2 font-serif text-sm leading-6 text-ink">
                   {attempt.promptTitle}

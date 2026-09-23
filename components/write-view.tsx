@@ -7,6 +7,7 @@ import { Pause, Play } from "lucide-react";
 
 type WriteViewProps = {
   attempt: Attempt;
+  sourceAttempt: Attempt | null;
   paused: boolean;
   isAuthenticated: boolean;
   remainingSeconds: number;
@@ -29,7 +30,7 @@ const TASK2_CHECKS = [
   "最後の数分を見直しに残す",
 ] as const;
 
-export function WriteView({ attempt, paused, isAuthenticated, remainingSeconds, onBody, onTogglePause, onSubmit }: WriteViewProps) {
+export function WriteView({ attempt, sourceAttempt, paused, isAuthenticated, remainingSeconds, onBody, onTogglePause, onSubmit }: WriteViewProps) {
   const overtime = remainingSeconds <= 0;
   const warn = remainingSeconds > 0 && remainingSeconds <= 5 * 60;
   const minWords = TASK_CONFIG[attempt.task].minWords;
@@ -41,7 +42,7 @@ export function WriteView({ attempt, paused, isAuthenticated, remainingSeconds, 
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
         <div className="flex items-baseline gap-3">
           <span className={cn("font-mono text-2xl tabular-nums", (overtime || warn) && "text-warn")}>{formatClock(remainingSeconds)}</span>
-          <span className="text-xs text-ink-muted">/ {Math.round(attempt.durationSeconds / 60)}分 · {TASK_LABEL[attempt.task]}</span>
+          <span className="text-xs text-ink-muted">/ {Math.round(attempt.durationSeconds / 60)}分 · {TASK_LABEL[attempt.task]}{sourceAttempt ? " · 書き直し" : ""}</span>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={onTogglePause}>{paused ? <><Play className="size-3.5" />再開</> : <><Pause className="size-3.5" />一時停止</>}</Button>
@@ -58,6 +59,16 @@ export function WriteView({ attempt, paused, isAuthenticated, remainingSeconds, 
           <p className="text-xs text-ink-muted">{PROMPT_TYPE_LABEL[attempt.promptType]} · 最低 {minWords}語</p>
           {attempt.promptVisual ? <div className="mt-3"><PromptVisual visual={attempt.promptVisual} /></div> : null}
           <p className="mt-3 font-serif text-sm leading-7 text-ink">{attempt.promptTitle}</p>
+          {sourceAttempt ? (
+            <details className="group mt-4 border-t border-line pt-3">
+              <summary className="cursor-pointer list-none text-xs font-medium text-accent marker:content-none">
+                <span className="inline-flex items-center gap-2"><span aria-hidden="true" className="text-base leading-none group-open:rotate-45">＋</span>初稿を確認</span>
+              </summary>
+              <p className="mt-3 max-h-64 overflow-y-auto whitespace-pre-wrap font-serif text-xs leading-6 text-ink-muted">
+                {sourceAttempt.body || "（未入力）"}
+              </p>
+            </details>
+          ) : null}
           <details className="group mt-4 border-t border-line pt-3">
             <summary className="cursor-pointer list-none text-xs font-medium text-accent marker:content-none"><span className="inline-flex items-center gap-2"><span aria-hidden="true" className="text-base leading-none group-open:rotate-45">＋</span>書く前に確認</span></summary>
             <ul className="mt-3 grid gap-2 text-xs leading-5 text-ink-muted sm:grid-cols-2">
