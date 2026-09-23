@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="48" text-anchor="middle" font-size="24" font-weight="700">International visitors to national parks, 2025</text>
+    <g stroke="#cfc5b6" fill="#fffdf9"><rect x="90" y="92" width="820" height="420"/><path d="M90 152H910M90 212H910M90 272H910M90 332H910M90 392H910M90 452H910M315 92V512M535 92V512M720 92V512"/></g>
+    <rect x="90" y="92" width="820" height="60" fill="#1f4d4a"/>
+    <g fill="#fff" font-size="15" font-weight="700" text-anchor="middle"><text x="202" y="128">National park</text><text x="425" y="118">Visitors</text><text x="425" y="137">(thousands)</text><text x="627" y="118">Average stay</text><text x="627" y="137">(nights)</text><text x="815" y="118">Satisfied</text><text x="815" y="137">(%)</text></g>
+    <g font-size="16" text-anchor="middle"><text x="202" y="190">Amber Peaks</text><text x="425" y="190">840</text><text x="627" y="190">3.6</text><text x="815" y="190">91</text><text x="202" y="250">Blue Lake</text><text x="425" y="250">1,120</text><text x="627" y="250">2.4</text><text x="815" y="250">88</text><text x="202" y="310">Cedar Valley</text><text x="425" y="310">620</text><text x="627" y="310">4.1</text><text x="815" y="310">94</text><text x="202" y="370">Desert Ridge</text><text x="425" y="370">475</text><text x="627" y="370">2.8</text><text x="815" y="370">86</text><text x="202" y="430">Emerald Coast</text><text x="425" y="430">1,350</text><text x="627" y="430">3.2</text><text x="815" y="430">90</text><text x="202" y="490">Forest Gate</text><text x="425" y="490">710</text><text x="627" y="490">3.9</text><text x="815" y="490">92</text></g>
+    <text x="500" y="560" text-anchor="middle" font-size="14" fill="#6b6258">Satisfaction figures are based on visitor surveys.</text>
+  </g>
+</svg>

@@ -147,6 +147,90 @@ const task2PromptData: Array<Omit<Task2Prompt, "task">> = [
     title:
       "People now get most of their news from social media rather than traditional newspapers. Why has this change occurred? What are the consequences?",
   },
+  {
+    id: "p21",
+    type: "opinion",
+    topic: "cities",
+    title:
+      "City centres should be made completely car-free. To what extent do you agree or disagree?",
+  },
+  {
+    id: "p22",
+    type: "opinion",
+    topic: "health",
+    title:
+      "Governments should place higher taxes on unhealthy food and drinks. To what extent do you agree or disagree?",
+  },
+  {
+    id: "p23",
+    type: "opinion",
+    topic: "culture",
+    title:
+      "Traditional celebrations are becoming less important in modern society. Do you think this is a positive or negative development?",
+  },
+  {
+    id: "p24",
+    type: "discussion",
+    topic: "environment",
+    title:
+      "Some people believe that protecting the environment is the responsibility of individuals. Others think it is mainly the responsibility of governments. Discuss both views and give your own opinion.",
+  },
+  {
+    id: "p25",
+    type: "discussion",
+    topic: "technology",
+    title:
+      "Some people think artificial intelligence will improve education. Others believe it will have a negative effect on learning. Discuss both views and give your own opinion.",
+  },
+  {
+    id: "p26",
+    type: "discussion",
+    topic: "media",
+    title:
+      "Some people believe famous people have a right to complete privacy. Others think the media should be free to report on their private lives. Discuss both views and give your own opinion.",
+  },
+  {
+    id: "p27",
+    type: "problem-solution",
+    topic: "work",
+    title:
+      "Many employees find it difficult to maintain a healthy balance between work and personal life. What causes this problem, and what solutions can employers and workers adopt?",
+  },
+  {
+    id: "p28",
+    type: "problem-solution",
+    topic: "transport",
+    title:
+      "Public transport in many rural areas is limited or unreliable. What problems does this cause, and how could services be improved?",
+  },
+  {
+    id: "p29",
+    type: "problem-solution",
+    topic: "culture",
+    title:
+      "Many traditional crafts are disappearing. Why is this happening, and what can be done to preserve them?",
+  },
+  {
+    id: "p30",
+    type: "two-part",
+    topic: "health",
+    title:
+      "More people are using mobile apps to monitor their health and fitness. Why has this become popular? Is it a positive or negative development?",
+  },
+  {
+    id: "p31",
+    type: "two-part",
+    topic: "environment",
+    title:
+      "Some countries are investing heavily in renewable energy. Why are they doing this? What difficulties can arise during the transition?",
+  },
+  {
+    id: "p32",
+    type: "two-part",
+    topic: "cities",
+    title:
+      "An increasing number of young adults are moving from small towns to large cities. Why is this happening? How does this trend affect small communities?",
+  },
 ];
 
 export const task2Prompts: Task2Prompt[] = task2PromptData.map((prompt) => ({
@@ -159,9 +243,12 @@ export const prompts: Prompt[] = [...task1Prompts, ...task2Prompts];
 export function pickPrompt(
   task: WritingTask,
   type: PromptType | "all" = "all",
+  excludeId?: string,
 ): Prompt {
   const pool = prompts.filter(
     (prompt) => prompt.task === task && (type === "all" || prompt.type === type),
   );
-  return pool[Math.floor(Math.random() * pool.length)] ?? prompts[0];
+  const candidates = pool.filter((prompt) => prompt.id !== excludeId);
+  const selectionPool = candidates.length > 0 ? candidates : pool;
+  return selectionPool[Math.floor(Math.random() * selectionPool.length)] ?? prompts[0];
 }

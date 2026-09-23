@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="700">Average weekly hours, 2025</text>
+    <text x="32" y="82" font-size="14">hours</text>
+    <g stroke="#ddd4c6"><path d="M85 500H950M85 420H950M85 340H950M85 260H950M85 180H950M85 100H950"/></g>
+    <g fill="#6b6258" font-size="13" text-anchor="end"><text x="72" y="505">0</text><text x="72" y="425">10</text><text x="72" y="345">20</text><text x="72" y="265">30</text><text x="72" y="185">40</text><text x="72" y="105">50</text></g>
+    <g fill="#1f4d4a"><rect x="135" y="180" width="48" height="320"/><rect x="305" y="148" width="48" height="352"/><rect x="475" y="204" width="48" height="296"/><rect x="645" y="124" width="48" height="376"/><rect x="815" y="228" width="48" height="272"/></g>
+    <g fill="#b56b36"><rect x="185" y="284" width="48" height="216"/><rect x="355" y="316" width="48" height="184"/><rect x="525" y="260" width="48" height="240"/><rect x="695" y="340" width="48" height="160"/><rect x="865" y="236" width="48" height="264"/></g>
+    <g font-size="15" text-anchor="middle"><text x="184" y="530">Ardin</text><text x="354" y="530">Belvar</text><text x="524" y="530">Corvia</text><text x="694" y="530">Dastan</text><text x="864" y="530">Estell</text></g>
+    <g font-size="14"><rect x="350" y="565" width="18" height="18" fill="#1f4d4a"/><text x="378" y="579">Paid work</text><rect x="520" y="565" width="18" height="18" fill="#b56b36"/><text x="548" y="579">Leisure</text></g>
+  </g>
+</svg>

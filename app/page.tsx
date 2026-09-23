@@ -246,7 +246,7 @@ export default function Page() {
             setTypeFilter(type);
             setPrompt(pickPrompt(task, type));
           }}
-          onShuffle={() => setPrompt(pickPrompt(task, typeFilter))}
+          onShuffle={() => setPrompt(pickPrompt(task, typeFilter, prompt.id))}
           onDuration={setDurationMinutes}
           onStart={start}
           onResume={() => resume()}

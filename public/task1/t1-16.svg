@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+  <rect width="1000" height="620" fill="#fbf8f2"/>
+  <g font-family="Arial, sans-serif" fill="#1f1a14">
+    <text x="500" y="42" text-anchor="middle" font-size="24" font-weight="700">Households with internet access</text><text x="28" y="80" font-size="14">%</text>
+    <g stroke="#ddd4c6"><path d="M90 500H940M90 420H940M90 340H940M90 260H940M90 180H940M90 100H940"/></g>
+    <g fill="#6b6258" font-size="13" text-anchor="end"><text x="78" y="505">0</text><text x="78" y="425">20</text><text x="78" y="345">40</text><text x="78" y="265">60</text><text x="78" y="185">80</text><text x="78" y="105">100</text></g>
+    <g font-size="14" text-anchor="middle"><text x="110" y="528">2005</text><text x="312" y="528">2010</text><text x="514" y="528">2015</text><text x="716" y="528">2020</text><text x="918" y="528">2025</text></g>
+    <polyline points="110,360 312,284 514,212 716,148 918,116" fill="none" stroke="#1f4d4a" stroke-width="5"/><polyline points="110,408 312,344 514,272 716,196 918,144" fill="none" stroke="#b56b36" stroke-width="5"/><polyline points="110,444 312,396 514,332 716,256 918,184" fill="none" stroke="#5d748c" stroke-width="5"/>
+    <g fill="#1f4d4a"><circle cx="110" cy="360" r="7"/><circle cx="312" cy="284" r="7"/><circle cx="514" cy="212" r="7"/><circle cx="716" cy="148" r="7"/><circle cx="918" cy="116" r="7"/></g><g fill="#b56b36"><circle cx="110" cy="408" r="7"/><circle cx="312" cy="344" r="7"/><circle cx="514" cy="272" r="7"/><circle cx="716" cy="196" r="7"/><circle cx="918" cy="144" r="7"/></g><g fill="#5d748c"><circle cx="110" cy="444" r="7"/><circle cx="312" cy="396" r="7"/><circle cx="514" cy="332" r="7"/><circle cx="716" cy="256" r="7"/><circle cx="918" cy="184" r="7"/></g>
+    <g font-size="14"><path d="M315 572h32" stroke="#1f4d4a" stroke-width="5"/><text x="357" y="577">North</text><path d="M445 572h32" stroke="#b56b36" stroke-width="5"/><text x="487" y="577">Central</text><path d="M590 572h32" stroke="#5d748c" stroke-width="5"/><text x="632" y="577">South</text></g>
+  </g>
+</svg>
