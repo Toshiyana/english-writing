@@ -12,6 +12,10 @@ import { supabase } from "@/lib/supabase/client";
 import type { Attempt, Prompt, PromptType, View, WritingTask } from "@/lib/types";
 import { TASK_CONFIG } from "@/lib/types";
 import { countWords } from "@/lib/word-count";
+import {
+  type WritingAssessment,
+  writingAssessmentSchema,
+} from "@/lib/writing-assessment";
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 const subscribeToClient = () => () => {};
@@ -43,6 +47,15 @@ export default function Page() {
   const [userId, setUserId] = useState<string | null>(null);
   const [storageLoading, setStorageLoading] = useState(true);
   const [storageError, setStorageError] = useState<string | null>(null);
+  const [assessments, setAssessments] = useState<
+    Record<string, WritingAssessment>
+  >({});
+  const [assessmentLoading, setAssessmentLoading] = useState<
+    Record<string, boolean>
+  >({});
+  const [assessmentErrors, setAssessmentErrors] = useState<
+    Record<string, string>
+  >({});
   const [paused, setPaused] = useState(false);
   const inProgress =
     attempts.find((item) => item.status === "in_progress") ?? null;
@@ -186,6 +199,54 @@ export default function Page() {
     setView("write");
   }
 
+  async function assessAttempt(target: Attempt, force = false) {
+    if (!force && (assessments[target.id] || assessmentLoading[target.id])) {
+      return;
+    }
+
+    setAssessmentLoading((current) => ({ ...current, [target.id]: true }));
+    setAssessmentErrors((current) => ({ ...current, [target.id]: "" }));
+
+    try {
+      const response = await fetch("/api/assess", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          promptId: target.promptId,
+          body: target.body,
+        }),
+      });
+      const payload: unknown = await response.json();
+
+      if (!response.ok) {
+        const message =
+          typeof payload === "object" &&
+          payload !== null &&
+          "error" in payload &&
+          typeof payload.error === "string"
+            ? payload.error
+            : "参考バンドを算出できませんでした。";
+        throw new Error(message);
+      }
+
+      const parsed = writingAssessmentSchema.parse(payload);
+      setAssessments((current) => ({ ...current, [target.id]: parsed }));
+    } catch (error) {
+      setAssessmentErrors((current) => ({
+        ...current,
+        [target.id]:
+          error instanceof Error
+            ? error.message
+            : "参考バンドを算出できませんでした。",
+      }));
+    } finally {
+      setAssessmentLoading((current) => ({
+        ...current,
+        [target.id]: false,
+      }));
+    }
+  }
+
   function submit() {
     if (!attempt) return;
     const next: Attempt = {
@@ -200,6 +261,7 @@ export default function Page() {
     void persistAttempt(next);
     setAttempt(next);
     setView("result");
+    void assessAttempt(next);
   }
 
   function openAttempt(target: Attempt) {
@@ -209,6 +271,7 @@ export default function Page() {
     }
     setAttempt(target);
     setView("result");
+    void assessAttempt(target);
   }
 
   function changeTask(nextTask: WritingTask) {
@@ -272,7 +335,11 @@ export default function Page() {
       {view === "result" && attempt ? (
         <ResultView
           attempt={attempt}
+          assessment={assessments[attempt.id] ?? null}
+          assessmentLoading={Boolean(assessmentLoading[attempt.id])}
+          assessmentError={assessmentErrors[attempt.id] || null}
           isAuthenticated={Boolean(userId)}
+          onAssess={() => void assessAttempt(attempt, true)}
           onHome={() => setView("home")}
           onAnother={() => {
             setTask(attempt.task);

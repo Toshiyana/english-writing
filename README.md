@@ -32,6 +32,20 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your-key
 
 メール確認とパスワード再設定はSite URL／Redirect URLs設定を使用します。本番運用では、AuthenticationのSMTP SettingsからカスタムSMTPを設定してください。
 
+## AI参考バンドスコア
+
+提出した答案は、TypeSafeのSystem Oneモデルを使ってIELTS Writingの4つの評価基準ごとの参考バンドを算出できます。これは練習用のAI推定であり、IELTS公式スコアや試験官による採点ではありません。
+
+TypeSafeでAPIキーを作成し、`.env.local`へサーバー専用の環境変数として設定してください。`NEXT_PUBLIC_`は付けないでください。
+
+```dotenv
+TYPESAFE_API_KEY=your-typesafe-api-key
+```
+
+評価リクエストは`/api/assess`からサーバー側で送信され、APIキーはブラウザへ公開されません。Task 1では現在、図表画像内の数値をモデルへ渡していないため、数値の正確性は参考バンドの評価対象外です。
+
+評価基準は[IELTS Writing Band Descriptors](https://ielts.org/cdn/ielts-guides/ielts-writing-band-descriptors.pdf)を参考にした要約です。
+
 ## Secret scanning
 
 [Betterleaks](https://github.com/betterleaks/betterleaks)は、コミット前にステージ済みの変更を、CIではGit履歴全体を検査します。ローカルフックを利用する場合はpre-commitとDockerをインストールし、次を実行してください。
