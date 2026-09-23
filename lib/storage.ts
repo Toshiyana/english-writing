@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase/client";
 import { type Attempt, attemptSchema } from "@/lib/types";
 import type { Session } from "@supabase/supabase-js";
+import type { WritingAssessment } from "@/lib/writing-assessment";
 
 type AttemptRow = {
   id: string;
@@ -16,7 +17,12 @@ type AttemptRow = {
   duration_seconds: number;
   word_count: number;
   status: Attempt["status"];
+  source_attempt_id: string | null;
+  assessment: WritingAssessment | null;
 };
+
+const ATTEMPT_COLUMNS =
+  "id, task, prompt_id, prompt_title, prompt_type, prompt_visual, body, started_at, submitted_at, elapsed_seconds, duration_seconds, word_count, status, source_attempt_id, assessment";
 
 async function getSession(): Promise<Session | null> {
   if (!supabase) {
@@ -43,6 +49,8 @@ function fromRow(row: AttemptRow): Attempt {
     durationSeconds: row.duration_seconds,
     wordCount: row.word_count,
     status: row.status,
+    sourceAttemptId: row.source_attempt_id,
+    assessment: row.assessment,
   });
 }
 
@@ -62,6 +70,8 @@ function toRow(attempt: Attempt, userId: string): AttemptRow & { user_id: string
     duration_seconds: attempt.durationSeconds,
     word_count: attempt.wordCount,
     status: attempt.status,
+    source_attempt_id: attempt.sourceAttemptId,
+    assessment: attempt.assessment,
   };
 }
 
@@ -70,9 +80,7 @@ export async function listAttempts(): Promise<Attempt[]> {
   if (!session || session.user.is_anonymous) return [];
   const { data, error } = await supabase!
     .from("writing_attempts")
-    .select(
-      "id, task, prompt_id, prompt_title, prompt_type, prompt_visual, body, started_at, submitted_at, elapsed_seconds, duration_seconds, word_count, status",
-    )
+    .select(ATTEMPT_COLUMNS)
     .eq("user_id", session.user.id)
     .order("started_at", { ascending: false });
 
@@ -85,9 +93,7 @@ export async function getAttempt(id: string): Promise<Attempt | null> {
   if (!session || session.user.is_anonymous) return null;
   const { data, error } = await supabase!
     .from("writing_attempts")
-    .select(
-      "id, task, prompt_id, prompt_title, prompt_type, prompt_visual, body, started_at, submitted_at, elapsed_seconds, duration_seconds, word_count, status",
-    )
+    .select(ATTEMPT_COLUMNS)
     .eq("user_id", session.user.id)
     .eq("id", id)
     .maybeSingle();

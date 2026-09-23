@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { writingAssessmentSchema } from "@/lib/writing-assessment";
 
 export const writingTaskSchema = z.enum(["task1", "task2"]);
 
@@ -68,6 +69,8 @@ export const attemptSchema = z.object({
   durationSeconds: z.number().int().positive(),
   wordCount: z.number().int().nonnegative(),
   status: attemptStatusSchema,
+  sourceAttemptId: z.string().nullable(),
+  assessment: writingAssessmentSchema.nullable(),
 });
 
 export type WritingTask = z.infer<typeof writingTaskSchema>;

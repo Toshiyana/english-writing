@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { AuthMenu } from "@/components/auth-menu";
 import { PromptVisual } from "@/components/prompt-visual";
+import { WritingComparison } from "@/components/writing-comparison";
 import type { Attempt } from "@/lib/types";
 import { PROMPT_TYPE_LABEL, TASK_CONFIG, TASK_LABEL } from "@/lib/types";
 import { formatClock, formatDateTime } from "@/lib/utils";
@@ -13,6 +14,8 @@ import { LoaderCircle, Sparkles } from "lucide-react";
 
 type ResultViewProps = {
   attempt: Attempt;
+  sourceAttempt: Attempt | null;
+  sourceAssessment: WritingAssessment | null;
   assessment: WritingAssessment | null;
   assessmentLoading: boolean;
   assessmentError: string | null;
@@ -20,10 +23,13 @@ type ResultViewProps = {
   onAssess: () => void;
   onHome: () => void;
   onAnother: () => void;
+  onRewrite: () => void;
 };
 
 export function ResultView({
   attempt,
+  sourceAttempt,
+  sourceAssessment,
   assessment,
   assessmentLoading,
   assessmentError,
@@ -31,6 +37,7 @@ export function ResultView({
   onAssess,
   onHome,
   onAnother,
+  onRewrite,
 }: ResultViewProps) {
   const minWords = TASK_CONFIG[attempt.task].minWords;
   const reached = attempt.wordCount >= minWords;
@@ -71,6 +78,15 @@ export function ResultView({
         onAssess={onAssess}
       />
 
+      {sourceAttempt ? (
+        <WritingComparison
+          before={sourceAttempt}
+          after={attempt}
+          beforeAssessment={sourceAssessment}
+          afterAssessment={assessment}
+        />
+      ) : null}
+
       <section className="rounded-lg border border-line bg-paper-raised p-5">
         <p className="text-xs text-ink-muted">
           {TASK_LABEL[attempt.task]} · {PROMPT_TYPE_LABEL[attempt.promptType]}
@@ -101,6 +117,7 @@ export function ResultView({
       ) : null}
 
       <div className="flex flex-wrap gap-3">
+        <Button onClick={onRewrite}>この答案を書き直す</Button>
         <Button onClick={onAnother}>もう1題</Button>
         <Button variant="outline" onClick={onHome}>
           ホーム

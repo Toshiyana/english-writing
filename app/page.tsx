@@ -59,6 +59,10 @@ export default function Page() {
   const [paused, setPaused] = useState(false);
   const inProgress =
     attempts.find((item) => item.status === "in_progress") ?? null;
+  const sourceAttempt =
+    attempt?.sourceAttemptId
+      ? attempts.find((item) => item.id === attempt.sourceAttemptId) ?? null
+      : null;
 
   const refreshAttempts = useCallback(async () => {
     try {
@@ -85,6 +89,7 @@ export default function Page() {
 
   const persistAttempt = useCallback(
     async (target: Attempt) => {
+      cacheAttempt(target);
       if (!userId) return;
 
       try {
@@ -185,6 +190,8 @@ export default function Page() {
       durationSeconds: durationMinutes * 60,
       wordCount: 0,
       status: "in_progress",
+      sourceAttemptId: null,
+      assessment: null,
     };
     void persistAttempt(next);
     setAttempt(next);
@@ -200,7 +207,10 @@ export default function Page() {
   }
 
   async function assessAttempt(target: Attempt, force = false) {
-    if (!force && (assessments[target.id] || assessmentLoading[target.id])) {
+    if (
+      !force &&
+      (target.assessment || assessments[target.id] || assessmentLoading[target.id])
+    ) {
       return;
     }
 
@@ -231,6 +241,11 @@ export default function Page() {
 
       const parsed = writingAssessmentSchema.parse(payload);
       setAssessments((current) => ({ ...current, [target.id]: parsed }));
+      const assessedTarget = { ...target, assessment: parsed };
+      setAttempt((current) =>
+        current?.id === target.id ? assessedTarget : current,
+      );
+      void persistAttempt(assessedTarget);
     } catch (error) {
       setAssessmentErrors((current) => ({
         ...current,
@@ -281,6 +296,30 @@ export default function Page() {
     setPrompt(pickPrompt(nextTask));
   }
 
+  function rewriteAttempt(source: Attempt) {
+    const next: Attempt = {
+      id: crypto.randomUUID(),
+      task: source.task,
+      promptId: source.promptId,
+      promptTitle: source.promptTitle,
+      promptType: source.promptType,
+      promptVisual: source.promptVisual,
+      body: "",
+      startedAt: new Date().toISOString(),
+      submittedAt: null,
+      elapsedSeconds: 0,
+      durationSeconds: source.durationSeconds,
+      wordCount: 0,
+      status: "in_progress",
+      sourceAttemptId: source.sourceAttemptId ?? source.id,
+      assessment: null,
+    };
+    void persistAttempt(next);
+    setAttempt(next);
+    setPaused(false);
+    setView("write");
+  }
+
   return (
     <main className="min-h-[100dvh] px-4 py-8 sm:px-6">
       {storageLoading ? (
@@ -321,6 +360,7 @@ export default function Page() {
       {view === "write" && attempt ? (
         <WriteView
           attempt={attempt}
+          sourceAttempt={sourceAttempt}
           paused={paused}
           isAuthenticated={Boolean(userId)}
           remainingSeconds={attempt.durationSeconds - attempt.elapsedSeconds}
@@ -335,12 +375,19 @@ export default function Page() {
       {view === "result" && attempt ? (
         <ResultView
           attempt={attempt}
-          assessment={assessments[attempt.id] ?? null}
+          sourceAttempt={sourceAttempt}
+          sourceAssessment={
+            sourceAttempt?.assessment ??
+            (sourceAttempt ? assessments[sourceAttempt.id] : null) ??
+            null
+          }
+          assessment={attempt.assessment ?? assessments[attempt.id] ?? null}
           assessmentLoading={Boolean(assessmentLoading[attempt.id])}
           assessmentError={assessmentErrors[attempt.id] || null}
           isAuthenticated={Boolean(userId)}
           onAssess={() => void assessAttempt(attempt, true)}
           onHome={() => setView("home")}
+          onRewrite={() => rewriteAttempt(attempt)}
           onAnother={() => {
             setTask(attempt.task);
             setTypeFilter("all");
