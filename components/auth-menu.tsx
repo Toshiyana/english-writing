@@ -99,6 +99,26 @@ export function AuthMenu() {
     setPasswordConfirmation("");
   }
 
+  async function signInWithGoogle() {
+    if (!supabase || pending) return;
+
+    setPending(true);
+    setError(null);
+    setMessage(null);
+
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+
+    if (oauthError) {
+      setPending(false);
+      setError(oauthError.message);
+    }
+  }
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!supabase) return;
@@ -282,6 +302,30 @@ export function AuthMenu() {
               </p>
             ) : (
               <form className="mt-5 grid gap-4" onSubmit={submit}>
+                {mode === "sign-in" || mode === "sign-up" ? (
+                  <>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={signInWithGoogle}
+                      disabled={pending}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="grid size-5 place-items-center rounded-full bg-white font-sans text-sm font-semibold text-[#4285f4] shadow-sm"
+                      >
+                        G
+                      </span>
+                      {pending ? "Googleに接続中…" : "Googleで続ける"}
+                    </Button>
+                    <div className="flex items-center gap-3" aria-hidden="true">
+                      <span className="h-px flex-1 bg-line" />
+                      <span className="text-xs text-ink-muted">または</span>
+                      <span className="h-px flex-1 bg-line" />
+                    </div>
+                  </>
+                ) : null}
+
                 {mode !== "update-password" &&
                 mode !== "password-updated" ? (
                   <label className="grid gap-1.5 text-sm">

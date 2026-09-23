@@ -25,8 +25,12 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your-key
 4. Supabase Dashboardの **Authentication > URL Configuration** でSite URLを設定します。ローカル開発では `http://localhost:3000`、本番では実際の公開URLを指定してください。
 5. 必要に応じてRedirect URLsへローカルURLと本番URLを追加します。
 6. **Authentication > Providers > Email** が有効になっていることを確認します。Anonymous Sign-InsとManual Linkingは使用しません。
-7. `supabase/migrations/20260922160751_create_writing_attempts.sql`を適用します（接続済みの`english-writing-app`プロジェクトには適用済みです）。
-8. 開発サーバーを再起動します。
+7. Google Cloudの **Google Auth Platform > Clients** で「ウェブ アプリケーション」のOAuthクライアントを作成します。
+   - **承認済みのJavaScript生成元** に `http://localhost:3000` と本番サイトのオリジンを追加します。
+   - **承認済みのリダイレクトURI** には、Supabase Dashboardの **Authentication > Providers > Google** に表示されるCallback URLをそのまま追加します（通常は `https://<project-ref>.supabase.co/auth/v1/callback` です）。
+8. Supabase Dashboardの **Authentication > Providers > Google** を開き、Google Cloudで発行されたClient IDとClient Secretを設定してGoogleプロバイダーを有効にします。Client Secretは`.env.local`へ保存したり、ブラウザへ公開したりしないでください。
+9. `supabase/migrations/20260922160751_create_writing_attempts.sql`を適用します（接続済みの`english-writing-app`プロジェクトには適用済みです）。
+10. 開発サーバーを再起動します。
 
 未ログインでもTask 1・Task 2を最後まで利用できますが、回答は現在のタブのメモリだけに保持されます。再読み込みやタブを閉じると消え、履歴と途中再開は利用できません。ログイン中の練習だけがSupabaseへ自動保存されます。練習中や提出後にログインした場合は、その時点で開いている回答も保存されます。
 
